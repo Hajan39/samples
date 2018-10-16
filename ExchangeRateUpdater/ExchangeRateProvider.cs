@@ -19,13 +19,8 @@ namespace ExchangeRateUpdater
         public IEnumerable<ExchangeRate> GetExchangeRates(IEnumerable<Currency> currencies, string url)
         {
             var doc = XDocument.Load(url);
-
             var lines = doc.Descendants().Where(node => node.Name == "radek");
-            //get all dvd nodes that have a city node with a value of "london"
-
-            var rates = lines.Join(currencies, x => x.Attribute("kod")?.Value, y => y.Code,
-                (element, currency) =>
-                    new ExchangeRate(Source, currency, decimal.Parse(element.Attribute("kurz")?.Value))).ToArray();
+            var rates = lines.Join(currencies, element => element.Attribute("kod")?.Value, currency => currency.Code, (element, currency) => new ExchangeRate(Source, currency, decimal.Parse(element.Attribute("kurz")?.Value))).ToArray();
             return rates;
         }
     }
