@@ -6,6 +6,8 @@ namespace ExchangeRateUpdater
 {
     public static class Program
     {
+        private static readonly string url =
+            "http://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.xml";
         private static IEnumerable<Currency> currencies = new[]
         {
             new Currency("USD"),
@@ -24,7 +26,7 @@ namespace ExchangeRateUpdater
             try
             {
                 var provider = new ExchangeRateProvider();
-                var rates = provider.GetExchangeRates(currencies);
+                var rates = provider.GetExchangeRates(currencies, url);
 
                 Console.WriteLine("Successfully retrieved " + rates.Count() + " exchange rates:");
                 foreach (var rate in rates)
